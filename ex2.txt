@@ -1,0 +1,33 @@
+% Authors: Johan Callvik & Mauritz Zachrisson
+kanin = 200.
+LEFT 30.
+twerk = 1.
+REP kanin "
+	DOWN.
+	FORW 1.
+	COLOR #E83D84.
+	RIGHT 5.
+	UP.
+	FORW 6.
+	BACK 2/1.
+	DOWN.
+	FORW 5.
+	RIGHT 5 + twerk.
+	twerk = twerk + 1.
+	COLOR #FCDA04.
+"
+UP.
+LEFT 20.
+FORW 10.
+REP kanin "
+	DOWN.
+	FORW 1.
+	COLOR #E80084.
+	RIGHT 10.
+	UP.
+	FORW 1.
+	DOWN.
+	FORW 1.
+	RIGHT 10.
+	COLOR #082F02.
+"

@@ -1,0 +1,6 @@
+INSTRUKTION FÖR KÖRNING
+
+För att köra programmet, cd:a till src/progp_s4-mappen.
+Kör där kommandot make följt av make run för att kompilera och köra programmet.
+Programmet kommer att ta filen input.in och producera filen out.pdf.
+Make-filen förutsätter att jflex, cup och convert är körbara kommandon samt JDK 8.

@@ -1,0 +1,69 @@
+// Parser.cup
+// Part of the KTH course DD1361 Programming Paradigms lab S4
+// Authors: Johan Callvik and Mauritz Zachrisson
+
+import java_cup.runtime.*;
+import progp_s4.data.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+
+// Declare terminals
+terminal DOWN, UP, FORW, BACK, LEFT, RIGHT, COLOR, REP, QUOTE;
+terminal PLUS, MINUS, UMINUS, TIMES, DIV, DOT, LPAREN, RPAREN, EQUALS;
+terminal Integer NUMBER;
+terminal String HEX;
+terminal String VAR;
+
+// Declare non-terminals
+
+non terminal List<Instruction> stmtlist;
+non terminal Instruction       stmt;
+non terminal Arithmetic        expr;
+non terminal Arithmetic        val;
+
+// Declare precedence
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+precedence left UMINUS;
+
+// A valid program must start with a statement list
+start with stmtlist;
+
+// A statement list can contain one or more statements
+stmtlist  ::= stmtlist:sl stmt:s               {: sl.add(s); RESULT = sl; :}
+            | stmt:s                           {: List<Instruction> l = new LinkedList<>(); l.add(s); RESULT = l; :}
+;
+
+stmt ::=      REP val:n stmt:s                 {: RESULT = new Instruction(sym.REP, n, s); :}
+            | REP val:n QUOTE stmtlist:s QUOTE {: RESULT = new Instruction(sym.REP, n, s); :}
+            | FORW val:n DOT                   {: RESULT = new Instruction(sym.FORW, n); :}
+            | BACK val:n DOT                   {: RESULT = new Instruction(sym.BACK, n); :}
+            | LEFT val:n DOT                   {: RESULT = new Instruction(sym.LEFT, n); :}
+            | RIGHT val:n DOT                  {: RESULT = new Instruction(sym.RIGHT, n); :}
+            | DOWN DOT                         {: RESULT = new Instruction(sym.DOWN); :}
+            | UP DOT                           {: RESULT = new Instruction(sym.UP); :}
+            | COLOR HEX:h DOT                  {: RESULT = new Instruction(sym.COLOR, h); :}
+            | VAR:v EQUALS val:e DOT           {: RESULT = new Instruction(sym.VAR, v, e); :}
+;
+
+// Evaluation of an arithmetic expression
+val ::= expr:e                                 {: RESULT = new UnaryArithmetic(e, false); :}
+;
+
+// Parser code for arithmetic evaluation from
+// CUP examples; see http://www2.cs.tum.edu/projects/cup/examples.php
+
+// FUCK THIS LAB
+
+expr      ::= expr:e1 PLUS  expr:e2            {: RESULT = new BinaryArithmetic(e1, e2, Type.PLUS); :}
+            | expr:e1 MINUS expr:e2            {: RESULT = new BinaryArithmetic(e1, e2, Type.MINUS); :}
+            | expr:e1 TIMES expr:e2            {: RESULT = new BinaryArithmetic(e1, e2, Type.TIMES); :}
+            | expr:e1 DIV expr:e2              {: RESULT = new BinaryArithmetic(e1, e2, Type.DIV); :}
+            | MINUS expr:e                     {: RESULT = new UnaryArithmetic(e, true); :}
+              %prec UMINUS
+            | LPAREN expr:e RPAREN	           {: RESULT = new UnaryArithmetic(e, false); :}
+            | NUMBER:n	                       {: RESULT = new Value(n); :}
+            | VAR:v                            {: RESULT = new Value(v); :}
+;

@@ -1,0 +1,12 @@
+% Authors: Johan Callvik & Mauritz Zachrisson
+MyVar = 2.
+LEFT 30.
+REP MyVar "
+	DOWN.
+	FORW 2.
+	COLOR #E83D84.
+	RIGHT 10*2.
+	UP.
+	FORW 2.
+	BACK 2/1.
+"
