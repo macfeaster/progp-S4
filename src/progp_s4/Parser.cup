@@ -52,10 +52,7 @@ stmt ::=      REP val:n stmt:s                 {: RESULT = new Instruction(sym.R
 val ::= expr:e                                 {: RESULT = new UnaryArithmetic(e, false); :}
 ;
 
-// Parser code for arithmetic evaluation from
-// CUP examples; see http://www2.cs.tum.edu/projects/cup/examples.php
-
-// FUCK THIS LAB
+// Parser code for arithmetic evaluation
 
 expr      ::= expr:e1 PLUS  expr:e2            {: RESULT = new BinaryArithmetic(e1, e2, Type.PLUS); :}
             | expr:e1 MINUS expr:e2            {: RESULT = new BinaryArithmetic(e1, e2, Type.MINUS); :}
